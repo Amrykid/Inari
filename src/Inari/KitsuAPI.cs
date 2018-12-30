@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace Inari
 {
@@ -52,6 +53,16 @@ namespace Inari
             var responseObject = (TrendingMangaContainer)JsonConvert.DeserializeObject(jsonResponse, typeof(TrendingMangaContainer));
 
             return responseObject.Data;
+        }
+
+        public static Task<Anime> GetMangaByIDAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Task<Manga> GetAnimeByIDAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

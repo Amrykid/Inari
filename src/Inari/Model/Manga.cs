@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Inari.Model
 {
     [DataContract]
-    public class Manga
+    public class Manga: IMedia
     {
         [DataMember(Name = "createdAt")]
         public DateTime CreatedAt { get; private set; }
