@@ -13,12 +13,12 @@ namespace Inari
 
         public static Task<object> GetTrendingAnimeAsync()
         {
-
+            return null;
         }
 
         public static Task<object> GetTrendingAnimeAsync(KitsuSession kitsuSession)
         {
-
+            return null;
         }
     }
 }
