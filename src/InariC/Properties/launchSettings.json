@@ -1,7 +1,8 @@
 {
   "profiles": {
     "InariC": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "tr -a"
     }
   }
 }

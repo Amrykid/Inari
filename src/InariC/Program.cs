@@ -22,7 +22,7 @@ namespace InariC
             public string Password { get; set; }
         }
 
-        [Verb("trending", HelpText = "Gets which anime|dramas|manga are trending.")]
+        [Verb("tr", HelpText = "Gets which anime|dramas|manga are trending.")]
         public class TrendingOptions
         {
             [Option('a')]
@@ -56,8 +56,9 @@ namespace InariC
 
             TaskCompletionSource<object> taskCompletionSource = new TaskCompletionSource<object>();
 
-            Parser.Default.ParseArguments<AuthOptions, object>(args)
+            Parser.Default.ParseArguments<AuthOptions, TrendingOptions>(args)
                 .WithParsed<AuthOptions>(opts => AuthenicationCommand(opts, taskCompletionSource))
+                .WithParsed<TrendingOptions>(opts => TrendingCommand(opts, taskCompletionSource))
                 .WithNotParsed(errs =>
                 {
                     taskCompletionSource.SetResult(null);
@@ -85,6 +86,28 @@ namespace InariC
 
                 taskCompletionSource.SetException(ex);
             }
+        }
+
+        private static async void TrendingCommand(TrendingOptions trendingOptions, TaskCompletionSource<object> taskCompletionSource)
+        {
+            if (trendingOptions.Anime)
+            {
+                await KitsuAPI.GetTrendingAnimeAsync(kitsuSession);
+            }
+            else if (trendingOptions.Drama)
+            {
+
+            }
+            else if (trendingOptions.Manga)
+            {
+
+            }
+            else
+            {
+
+            }
+
+            taskCompletionSource.SetResult(null);
         }
     }
 }
