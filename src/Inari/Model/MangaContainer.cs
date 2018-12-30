@@ -7,9 +7,9 @@ using System.Text;
 namespace Inari.Model
 {
     [DataContract]
-    public class TrendingAnimeContainer
+    public class MangaContainer
     {
         [DataMember]
-        public IEnumerable<TrendingAnime> Data { get; set; }
+        public IEnumerable<Manga> Data { get; set; }
     }
 }

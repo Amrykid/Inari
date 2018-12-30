@@ -37,32 +37,38 @@ namespace Inari
             return await response.Content.ReadAsStringAsync();
         }
 
-        public static async Task<IEnumerable<TrendingAnime>> GetTrendingAnimeAsync(KitsuSession kitsuSession = null)
+        public static async Task<IEnumerable<Anime>> GetTrendingAnimeAsync(KitsuSession kitsuSession = null)
         {
             var jsonResponse = await GetJsonAsync("/trending/anime", kitsuSession);
 
-            var responseObject = (TrendingAnimeContainer)JsonConvert.DeserializeObject(jsonResponse, typeof(TrendingAnimeContainer));
+            var responseObject = (AnimeContainer)JsonConvert.DeserializeObject(jsonResponse, typeof(AnimeContainer));
 
             return responseObject.Data;
         }
 
-        public static async Task<IEnumerable<TrendingManga>> GetTrendingMangaAsync(KitsuSession kitsuSession = null)
+        public static async Task<IEnumerable<Manga>> GetTrendingMangaAsync(KitsuSession kitsuSession = null)
         {
             var jsonResponse = await GetJsonAsync("/trending/manga", kitsuSession);
 
-            var responseObject = (TrendingMangaContainer)JsonConvert.DeserializeObject(jsonResponse, typeof(TrendingMangaContainer));
+            var responseObject = (MangaContainer)JsonConvert.DeserializeObject(jsonResponse, typeof(MangaContainer));
 
             return responseObject.Data;
         }
 
-        public static Task<Anime> GetMangaByIDAsync(int id)
+        public static Task<Manga> GetMangaByIDAsync(int id, KitsuSession kitsuSession = null)
         {
             throw new NotImplementedException();
         }
 
-        public static Task<Manga> GetAnimeByIDAsync(int id)
+        public static async Task<Anime> GetAnimeByIDAsync(int id, KitsuSession kitsuSession = null)
         {
-            throw new NotImplementedException();
+            if (id < 0) throw new ArgumentOutOfRangeException(nameof(id));
+
+            var jsonResponse = await GetJsonAsync("/anime/" + id.ToString(), kitsuSession);
+
+            var responseObject = (Anime)JsonConvert.DeserializeObject(jsonResponse, typeof(Anime));
+
+            return responseObject;
         }
     }
 }

@@ -91,11 +91,11 @@ namespace InariC
 
                 if (authOptions.Anime)
                 {
-                    media = KitsuAPI.GetAnimeByIDAsync(authOptions.Id);
+                    media = await KitsuAPI.GetAnimeByIDAsync(authOptions.Id);
                 }
                 else if (authOptions.Manga)
                 {
-                    media = KitsuAPI.GetMangaByIDAsync(authOptions.Id);
+                    media = await KitsuAPI.GetMangaByIDAsync(authOptions.Id);
                 }
 
                 taskCompletionSource.SetResult(media);
@@ -132,7 +132,7 @@ namespace InariC
 
         private static async void TrendingCommand(TrendingOptions trendingOptions, TaskCompletionSource<object> taskCompletionSource)
         {
-            IEnumerable<ITrendingMedia> trendingMedia = null;
+            IEnumerable<IMedia> trendingMedia = null;
             if (trendingOptions.Anime)
             {
                 trendingMedia = await KitsuAPI.GetTrendingAnimeAsync(kitsuSession);
@@ -140,7 +140,7 @@ namespace InariC
             else if (trendingOptions.Drama)
             {
                 //not implemented
-                trendingMedia = new ITrendingMedia[] { };
+                trendingMedia = new IMedia[] { };
             }
             else if (trendingOptions.Manga)
             {

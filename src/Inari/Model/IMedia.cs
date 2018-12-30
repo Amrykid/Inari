@@ -4,9 +4,9 @@ namespace Inari.Model
 {
     public interface IMedia
     {
-        string Slug { get; }
-        string Synopsis { get; }
-        ReadOnlyDictionary<string, string> Titles { get; }
-        string CanonicalTitle { get; }
+        int Id { get; }
+        string Type { get; }
+        ReadOnlyDictionary<string, string> Links { get; }
+        IMediaAttributes Attributes { get; }
     }
 }
