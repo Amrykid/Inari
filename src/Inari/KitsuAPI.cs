@@ -55,9 +55,16 @@ namespace Inari
             return responseObject.Data;
         }
 
-        public static Task<Manga> GetMangaByIDAsync(int id, KitsuSession kitsuSession = null)
+        public static async Task<Manga> GetMangaByIDAsync(int id, KitsuSession kitsuSession = null)
         {
-            throw new NotImplementedException();
+            if (id < 0) throw new ArgumentOutOfRangeException(nameof(id));
+
+            var jsonResponse = await GetJsonAsync("/manga/" + id.ToString(), kitsuSession);
+
+            JObject responseObject = (JObject)JsonConvert.DeserializeObject(jsonResponse);
+            Manga result = responseObject.First.First.ToObject<Manga>();
+
+            return result;
         }
 
         public static async Task<Anime> GetAnimeByIDAsync(int id, KitsuSession kitsuSession = null)
@@ -66,9 +73,10 @@ namespace Inari
 
             var jsonResponse = await GetJsonAsync("/anime/" + id.ToString(), kitsuSession);
 
-            var responseObject = (Anime)JsonConvert.DeserializeObject(jsonResponse, typeof(Anime));
+            JObject responseObject = (JObject)JsonConvert.DeserializeObject(jsonResponse);
+            Anime result = responseObject.First.First.ToObject<Anime>();
 
-            return responseObject;
+            return result;
         }
     }
 }

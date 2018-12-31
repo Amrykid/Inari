@@ -25,7 +25,7 @@ namespace Inari.Model
         [DataMember(Name = "abbreviatedTitles")]
         public string[] AbbreviatedTitles { get; private set; }
         [DataMember(Name = "averageRating")]
-        public double AverageRating { get; private set; }
+        public double? AverageRating { get; private set; }
         [DataMember(Name = "ratingFrequencies")]
         public ReadOnlyDictionary<string, string> RatingFrequencies { get; private set; }
         [DataMember(Name = "userCount")]
@@ -39,7 +39,7 @@ namespace Inari.Model
         [DataMember(Name = "popularityRank")]
         public int PopularityRank { get; private set; }
         [DataMember(Name = "ratingRank")]
-        public int RatingRank { get; private set; }
+        public int? RatingRank { get; private set; }
         [DataMember(Name = "ageRating")]
         public string AgeRating { get; private set; }
         [DataMember(Name = "ageRatingGuide")]

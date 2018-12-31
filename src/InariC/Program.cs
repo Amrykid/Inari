@@ -98,6 +98,11 @@ namespace InariC
                     media = await KitsuAPI.GetMangaByIDAsync(authOptions.Id);
                 }
 
+                if (media != null)
+                {
+                    PrintMedia(media);
+                }
+
                 taskCompletionSource.SetResult(media);
             }
             catch (Exception ex)
@@ -154,16 +159,21 @@ namespace InariC
 
             foreach (var item in trendingMedia)
             {
-                Console.WriteLine("-");
-                Console.WriteLine("Title: {0}", item.Attributes.CanonicalTitle);
-                Console.WriteLine("ID: {0}", item.Id);
-                Console.WriteLine("--Synopsis:");
-                Console.WriteLine(item.Attributes.Synopsis);
-                Console.WriteLine("--");
-                Console.WriteLine("-");
+                PrintMedia(item);
             }
 
             taskCompletionSource.SetResult(null);
+        }
+
+        private static void PrintMedia(IMedia item)
+        {
+            Console.WriteLine("-");
+            Console.WriteLine("Title: {0}", item.Attributes.CanonicalTitle);
+            Console.WriteLine("ID: {0}", item.Id);
+            Console.WriteLine("--Synopsis:");
+            Console.WriteLine(item.Attributes.Synopsis);
+            Console.WriteLine("--");
+            Console.WriteLine("-");
         }
     }
 }

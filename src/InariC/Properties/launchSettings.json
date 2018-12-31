@@ -2,7 +2,7 @@
   "profiles": {
     "InariC": {
       "commandName": "Project",
-      "commandLineArgs": "tr -a"
+      "commandLineArgs": "get -m 1"
     }
   }
 }
