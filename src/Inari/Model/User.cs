@@ -15,18 +15,17 @@ namespace Inari.Model
         public ReadOnlyDictionary<string, string> Links { get; private set; }
         [DataMember(Name = "attributes")]
         public IEntityAttributes Attributes { get; private set; }
-
-        //[DataMember(Name = "relationships")]
-        //public ReadOnlyDictionary<string, ReadOnlyDictionary<string, string>> Relationships { get; private set; }
+        [DataMember(Name = "relationships")]
+        public UserRelationships Relationships { get; private set; }
 
         [JsonConstructor]
-        internal User(int id, string type, ReadOnlyDictionary<string, string> links, UserAttributes attributes)
+        internal User(int id, string type, ReadOnlyDictionary<string, string> links, UserAttributes attributes, UserRelationships userRelationships)
         {
             Id = id;
             Type = type;
             Links = links;
             Attributes = attributes;
-            //Relationships = relationships;
+            Relationships = userRelationships;
         }
 
         public override string ToString()
