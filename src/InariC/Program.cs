@@ -35,7 +35,7 @@ namespace InariC
             public bool Manga { get; set; }
         }
 
-        [Verb("get", HelpText = "Retrieves an anime|drama|manga by ID from Kitsu.IO")]
+        [Verb("get", HelpText = "Retrieves an anime|drama|manga|user by ID from Kitsu.IO")]
         public class GetOptions
         {
             [Option('a', SetName = "type", HelpText = "Retrieve an anime from Kitsu.")]
@@ -44,6 +44,8 @@ namespace InariC
             public bool Drama { get; set; }
             [Option('m', SetName = "type", HelpText = "Retrieve a manga from Kitsu.")]
             public bool Manga { get; set; }
+            [Option('u', SetName = "type", HelpText = "Retrieve a user from Kitsu.")]
+            public bool User { get; set; }
 
 
             [Value(1, Required = true, HelpText = "The ID of the media entity to be retrieved.", MetaName = "ID")]
@@ -87,23 +89,43 @@ namespace InariC
         {
             try
             {
-                IMedia media = null;
-
-                if (authOptions.Anime)
+                if (authOptions.User)
                 {
-                    media = await KitsuAPI.GetAnimeByIDAsync(authOptions.Id);
+                    User user = await KitsuAPI.GetUserByIDAsync(authOptions.Id, kitsuSession);
+                    UserAttributes userAttributes = user.Attributes.As<UserAttributes>();
+
+                    Console.WriteLine("-");
+                    Console.WriteLine("Name: {0}", userAttributes.Name);
+                    Console.WriteLine("ID: {0}", user.Id);
+                    Console.WriteLine("--About:");
+                    Console.WriteLine(userAttributes.About);
+                    Console.WriteLine("--");
+                    Console.WriteLine("-");
                 }
-                else if (authOptions.Manga)
+                else
                 {
-                    media = await KitsuAPI.GetMangaByIDAsync(authOptions.Id);
+                    IEntity media = null;
+
+                    if (authOptions.Anime)
+                    {
+                        media = await KitsuAPI.GetAnimeByIDAsync(authOptions.Id, kitsuSession);
+                    }
+                    else if (authOptions.Manga)
+                    {
+                        media = await KitsuAPI.GetMangaByIDAsync(authOptions.Id, kitsuSession);
+                    }
+                    else if (authOptions.Drama)
+                    {
+
+                    }
+
+                    if (media != null)
+                    {
+                        PrintMedia(media);
+                    }
                 }
 
-                if (media != null)
-                {
-                    PrintMedia(media);
-                }
-
-                taskCompletionSource.SetResult(media);
+                taskCompletionSource.SetResult(null);
             }
             catch (Exception ex)
             {
@@ -137,7 +159,7 @@ namespace InariC
 
         private static async void TrendingCommand(TrendingOptions trendingOptions, TaskCompletionSource<object> taskCompletionSource)
         {
-            IEnumerable<IMedia> trendingMedia = null;
+            IEnumerable<IEntity> trendingMedia = null;
             if (trendingOptions.Anime)
             {
                 trendingMedia = await KitsuAPI.GetTrendingAnimeAsync(kitsuSession);
@@ -145,7 +167,7 @@ namespace InariC
             else if (trendingOptions.Drama)
             {
                 //not implemented
-                trendingMedia = new IMedia[] { };
+                trendingMedia = new IEntity[] { };
             }
             else if (trendingOptions.Manga)
             {
@@ -165,13 +187,13 @@ namespace InariC
             taskCompletionSource.SetResult(null);
         }
 
-        private static void PrintMedia(IMedia item)
+        private static void PrintMedia(IEntity item)
         {
             Console.WriteLine("-");
-            Console.WriteLine("Title: {0}", item.Attributes.CanonicalTitle);
+            Console.WriteLine("Title: {0}", item.Attributes.As<IMediaAttributes>().CanonicalTitle);
             Console.WriteLine("ID: {0}", item.Id);
             Console.WriteLine("--Synopsis:");
-            Console.WriteLine(item.Attributes.Synopsis);
+            Console.WriteLine(item.Attributes.As<IMediaAttributes>().Synopsis);
             Console.WriteLine("--");
             Console.WriteLine("-");
         }

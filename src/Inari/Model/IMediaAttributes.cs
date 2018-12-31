@@ -2,11 +2,10 @@
 
 namespace Inari.Model
 {
-    public interface IMediaAttributes
+    public interface IMediaAttributes: IEntityAttributes
     {
-        string Slug { get; }
+        string CanonicalTitle { get; }
         string Synopsis { get; }
         ReadOnlyDictionary<string, string> Titles { get; }
-        string CanonicalTitle { get; }
     }
 }

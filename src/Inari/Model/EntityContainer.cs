@@ -7,9 +7,10 @@ using System.Text;
 namespace Inari.Model
 {
     [DataContract]
-    public class AnimeContainer
+    public class EntityContainer<T> where T: IEntity
     {
         [DataMember]
-        public IEnumerable<Anime> Data { get; set; }
+        public IEnumerable<T> Data { get; set; }
     }
 }
+

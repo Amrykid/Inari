@@ -8,7 +8,7 @@ using System.Text;
 namespace Inari.Model
 {
     [DataContract]
-    public class Anime: IMedia
+    public class Anime: IEntity
     {
         [DataMember(Name ="id")]
         public int Id { get; private set; }
@@ -17,7 +17,7 @@ namespace Inari.Model
         [DataMember(Name = "links")]
         public ReadOnlyDictionary<string, string> Links { get; private set; }
         [DataMember(Name = "attributes")]
-        public IMediaAttributes Attributes { get; private set; }
+        public IEntityAttributes Attributes { get; private set; }
 
         [JsonConstructor]
         internal Anime(int id, string type, ReadOnlyDictionary<string, string> links, AnimeAttributes attributes)
@@ -30,7 +30,7 @@ namespace Inari.Model
 
         public override string ToString()
         {
-            return Attributes.CanonicalTitle ?? base.ToString();
+            return ((IMediaAttributes)Attributes).CanonicalTitle ?? base.ToString();
         }
     }
 }

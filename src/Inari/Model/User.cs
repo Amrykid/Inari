@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
 namespace Inari.Model
 {
     [DataContract]
-    public class Manga: IEntity
+    public class User: IEntity
     {
         [DataMember(Name = "id")]
         public int Id { get; private set; }
@@ -17,18 +16,22 @@ namespace Inari.Model
         [DataMember(Name = "attributes")]
         public IEntityAttributes Attributes { get; private set; }
 
+        //[DataMember(Name = "relationships")]
+        //public ReadOnlyDictionary<string, ReadOnlyDictionary<string, string>> Relationships { get; private set; }
+
         [JsonConstructor]
-        internal Manga(int id, string type, ReadOnlyDictionary<string, string> links, MangaAttributes attributes)
+        internal User(int id, string type, ReadOnlyDictionary<string, string> links, UserAttributes attributes)
         {
             Id = id;
             Type = type;
             Links = links;
             Attributes = attributes;
+            //Relationships = relationships;
         }
 
         public override string ToString()
         {
-            return ((IMediaAttributes)Attributes).CanonicalTitle ?? base.ToString();
+            return Attributes.As<UserAttributes>().Name ?? base.ToString();
         }
     }
 }

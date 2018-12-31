@@ -1,8 +1,7 @@
 {
   "profiles": {
     "InariC": {
-      "commandName": "Project",
-      "commandLineArgs": "get -m 1"
+      "commandName": "Project"
     }
   }
 }

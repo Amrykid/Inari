@@ -37,11 +37,23 @@ namespace Inari
             return await response.Content.ReadAsStringAsync();
         }
 
+        public static async Task<User> GetSessionUserAsync(KitsuSession kitsuSession)
+        {
+            if (kitsuSession == null) throw new ArgumentNullException(nameof(KitsuSession));
+
+            //todo implement filter system and use it in this function
+            var jsonResponse = await GetJsonAsync("/users?filter[self]=true", kitsuSession);
+
+            var responseObject = (EntityContainer<User>)JsonConvert.DeserializeObject(jsonResponse, typeof(EntityContainer<User>));
+
+            return responseObject.Data.FirstOrDefault();
+        }
+
         public static async Task<IEnumerable<Anime>> GetTrendingAnimeAsync(KitsuSession kitsuSession = null)
         {
             var jsonResponse = await GetJsonAsync("/trending/anime", kitsuSession);
 
-            var responseObject = (AnimeContainer)JsonConvert.DeserializeObject(jsonResponse, typeof(AnimeContainer));
+            var responseObject = (EntityContainer<Anime>)JsonConvert.DeserializeObject(jsonResponse, typeof(EntityContainer<Anime>));
 
             return responseObject.Data;
         }
@@ -50,7 +62,7 @@ namespace Inari
         {
             var jsonResponse = await GetJsonAsync("/trending/manga", kitsuSession);
 
-            var responseObject = (MangaContainer)JsonConvert.DeserializeObject(jsonResponse, typeof(MangaContainer));
+            var responseObject = (EntityContainer<Manga>)JsonConvert.DeserializeObject(jsonResponse, typeof(EntityContainer<Manga>));
 
             return responseObject.Data;
         }
@@ -75,6 +87,18 @@ namespace Inari
 
             JObject responseObject = (JObject)JsonConvert.DeserializeObject(jsonResponse);
             Anime result = responseObject.First.First.ToObject<Anime>();
+
+            return result;
+        }
+
+        public static async Task<User> GetUserByIDAsync(int id, KitsuSession kitsuSession = null)
+        {
+            if (id < 0) throw new ArgumentOutOfRangeException(nameof(id));
+
+            var jsonResponse = await GetJsonAsync("/users/" + id.ToString(), kitsuSession);
+
+            JObject responseObject = (JObject)JsonConvert.DeserializeObject(jsonResponse);
+            User result = responseObject.First.First.ToObject<User>();
 
             return result;
         }
